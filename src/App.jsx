@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 import { calculateTotals } from "./utils/calculations";
 
 // Components
-import Navbar from "./components/Navbar";
+import Navbar from "./Components/Navbar";
 import BillPreview from "./components/BillPreview";
 import Dashboard from "./components/Dashboard";
 import SuccessPage from "./components/SuccessPage";
