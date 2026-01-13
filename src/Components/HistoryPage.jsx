@@ -29,21 +29,21 @@ export default function HistoryPage({ onViewBill, refreshTrigger }) {
   // Function to fetch standard sales bills
   const fetchBills = async () => {
     setLoading(true);
-    try { const res = await axios.get('http://localhost:5000/api/bills/all'); setAllBills(res.data); } catch (e) {}
+    try { const res = await axios.get('https://billing-be-0syt.onrender.com/api/bills/all'); setAllBills(res.data); } catch (e) {}
     setLoading(false);
   };
 
   // Function to fetch return transactions
   const fetchReturns = async () => {
     setLoading(true);
-    try { const res = await axios.get('http://localhost:5000/api/returns/all'); setAllReturns(res.data); } catch (e) {}
+    try { const res = await axios.get('https://billing-be-0syt.onrender.com/returns/all'); setAllReturns(res.data); } catch (e) {}
     setLoading(false);
   };
 
   // Function to fetch updated bills (final bills after returns)
   const fetchUpdated = async () => {
     setLoading(true);
-    try { const res = await axios.get('http://localhost:5000/api/updated/all'); setAllUpdated(res.data); } catch (e) {}
+    try { const res = await axios.get('https://billing-be-0syt.onrender.com/api/updated/all'); setAllUpdated(res.data); } catch (e) {}
     setLoading(false);
   };
 

@@ -23,7 +23,7 @@ export default function ReportPage() {
   const fetchStats = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('http://localhost:5000/api/bills/stats');
+      const res = await axios.get('https://billing-be-0syt.onrender.com//api/bills/stats');
       setStats(res.data);
     } catch (error) {
       console.error("Error fetching stats:", error);

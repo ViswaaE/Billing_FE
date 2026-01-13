@@ -70,20 +70,20 @@ function AppContent() {
   // Fetch initial data (Products, Dashboard Stats, Next Bill No)
   const fetchAllData = async () => {
       try {
-        const prodRes = await axios.get('http://localhost:5000/api/products');
+        const prodRes = await axios.get('https://billing-be-0syt.onrender.com/api/products');
         setProductCatalog(prodRes.data);
         
         // Only fetch next bill number if creating a new bill (not editing)
         if (!editingId) {
-            const billRes = await axios.get('http://localhost:5000/api/bills/next-number');
+            const billRes = await axios.get('https://billing-be-0syt.onrender.com/api/bills/next-number');
             setBillData(prev => ({ ...prev, billNo: billRes.data.nextBillNo }));
         }
         
-        const recentRes = await axios.get('http://localhost:5000/api/bills');
+        const recentRes = await axios.get('https://billing-be-0syt.onrender.com/api/bills');
         setRecentBills(recentRes.data);
-        const recentRetRes = await axios.get('http://localhost:5000/api/returns');
+        const recentRetRes = await axios.get('https://billing-be-0syt.onrender.com/api/returns');
         setRecentReturns(recentRetRes.data);
-        const updRes = await axios.get('http://localhost:5000/api/updated');
+        const updRes = await axios.get('https://billing-be-0syt.onrender.com/api/updated');
         setRecentUpdated(updRes.data);
         setLoading(false);
       } catch (error) { console.error("Error:", error); setLoading(false); }
@@ -149,11 +149,11 @@ function AppContent() {
       const payload = { billNo: billData.billNo, date: billData.billDate, client: { name: billData.clientName, mobile: billData.clientMobile, address: billData.clientAddress }, items: activeItems.map(i => ({...i, amount: i.qty * i.rate})), totals: finalTotals };
       
       // Send to backend
-      if (editingId) await axios.put(`http://localhost:5000/api/bills/update/${editingId}`, payload);
-      else await axios.post('http://localhost:5000/api/bills/save', payload);
+      if (editingId) await axios.put(`https://billing-be-0syt.onrender.com/api/bills/update/${editingId}`, payload);
+      else await axios.post('https://billing-be-0syt.onrender.com/api/bills/save', payload);
       
       // Update inventory prices
-      await axios.put('http://localhost:5000/api/products/bulk-update', activeItems);
+      await axios.put('https://billing-be-0syt.onrender.com/api/products/bulk-update', activeItems);
       
       setSuccessData({ billNo: currentBillNo, clientName: currentClient });
       triggerRefresh(); setView("success");
@@ -174,8 +174,8 @@ function AppContent() {
 
       const payload = { originalBillNo: returnBillData.originalBillNo, returnDate: returnBillData.returnDate, client: { name: returnBillData.clientName, mobile: returnBillData.clientMobile, address: returnBillData.clientAddress }, items: returnItems.map(i => ({...i, amount: i.qty * i.rate})), totals: finalReturnTotals };
       
-      if (editingId) await axios.put(`http://localhost:5000/api/returns/update/${editingId}`, payload);
-      else await axios.post('http://localhost:5000/api/returns/save', payload);
+      if (editingId) await axios.put(`https://billing-be-0syt.onrender.com/api/returns/update/${editingId}`, payload);
+      else await axios.post('https://billing-be-0syt.onrender.com/api/returns/save', payload);
       
       setSuccessData({ billNo: currentReturnId, clientName: currentClient });
       triggerRefresh(); setReturnView("success"); 
@@ -192,7 +192,7 @@ function AppContent() {
   // Reset state for creating a new bill
   const handleNewBill = async () => {
     setLoading(true); setEditingId(null); setItems([{ category: "", desc: "", qty: "", rate: "", unit: "Pcs" }]);
-    const billRes = await axios.get('http://localhost:5000/api/bills/next-number');
+    const billRes = await axios.get('https://billing-be-0syt.onrender.com/api/bills/next-number');
     setBillData({ clientName: "", clientAddress: "", clientMobile: "", billNo: billRes.data.nextBillNo, billDate: getTodayDate(), paymentMode: "Credit", shopMobile: "6385278892" });
     setView("dashboard"); navigate("/billing"); setLoading(false);
   };
@@ -216,8 +216,8 @@ function AppContent() {
   const requestDeleteBill = (id) => { setModal({ isOpen: true, type: 'confirm', title: 'Confirm Deletion', message: 'Are you sure?', onConfirm: () => confirmDeleteBill(id) }); };
   const confirmDeleteBill = async (id) => {
     try {
-        if (selectedBill && selectedBill.returnId) await axios.delete(`http://localhost:5000/api/returns/delete/${id}`);
-        else await axios.delete(`http://localhost:5000/api/bills/delete/${id}`);
+        if (selectedBill && selectedBill.returnId) await axios.delete(`https://billing-be-0syt.onrender.com/api/returns/delete/${id}`);
+        else await axios.delete(`https://billing-be-0syt.onrender.com/api/bills/delete/${id}`);
         closeModal(); triggerRefresh(); 
         if (window.location.pathname === '/bill-detail') navigate('/');
     } catch (error) { closeModal(); showErrorModal("Failed to delete record"); }

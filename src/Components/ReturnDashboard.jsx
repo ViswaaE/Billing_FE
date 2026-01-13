@@ -28,7 +28,7 @@ export default function ReturnDashboard({
     const fetchOriginalItems = async () => {
       if (returnData.originalBillNo && originalBillItems.length === 0) {
         try {
-          const res = await axios.get(`http://localhost:5000/api/bills/find/${returnData.originalBillNo}`);
+          const res = await axios.get(`https://billing-be-0syt.onrender.com/api/bills/find/${returnData.originalBillNo}`);
           if (res.data && res.data.items) setOriginalBillItems(res.data.items);
         } catch (error) { console.error("Failed to load original items:", error); }
       }
@@ -42,7 +42,7 @@ export default function ReturnDashboard({
     setLoading(true);
     try {
       // Check Exists: Prevent creating duplicate returns for the same bill
-      const checkRes = await axios.get(`http://localhost:5000/api/returns/check/${searchBillNo}`);
+      const checkRes = await axios.get(`https://billing-be-0syt.onrender.com/returns/check/${searchBillNo}`);
       if (checkRes.data.exists) {
         setLoading(false);
         // If return exists, notify parent to switch to "Edit Mode" for that existing return
@@ -51,7 +51,7 @@ export default function ReturnDashboard({
       }
 
       // Find Bill: Fetch the original sales transaction
-      const res = await axios.get(`http://localhost:5000/api/bills/find/${searchBillNo}`);
+      const res = await axios.get(`https://billing-be-0syt.onrender.com/api/bills/find/${searchBillNo}`);
       const bill = res.data;
       
       // LOGIC: Generate Return ID (NB007 -> RB007)
